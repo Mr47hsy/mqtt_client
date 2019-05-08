@@ -9,8 +9,11 @@ part of mqtt_client;
 
 /// The MQTT normal(insecure TCP) connection class
 class MqttNormalConnection extends MqttConnection {
+  ///Connection timeout
+  Duration _timeOut;
+
   /// Default constructor
-  MqttNormalConnection(events.EventBus eventBus) : super(eventBus);
+  MqttNormalConnection(events.EventBus eventBus, this._timeOut) : super(eventBus);
 
   /// Initializes a new instance of the MqttConnection class.
   MqttNormalConnection.fromConnect(
@@ -26,7 +29,7 @@ class MqttNormalConnection extends MqttConnection {
         Completer<MqttClientConnectionStatus>();
     try {
       // Connect and save the socket.
-      Socket.connect(server, port).then((dynamic socket) {
+      Socket.connect(server, port, timeout: _timeOut).then((dynamic socket) {
         client = socket;
         readWrapper = ReadWrapper();
         messageStream = MqttByteBuffer(typed.Uint8Buffer());

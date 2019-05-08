@@ -9,12 +9,11 @@ part of mqtt_client;
 
 /// Connection handler that performs connections and disconnections to the hostname in a synchronous manner.
 class SynchronousMqttConnectionHandler extends MqttConnectionHandler {
-  Duration _timeOut;
   /// Initializes a new instance of the MqttConnectionHandler class.
-  SynchronousMqttConnectionHandler(this._clientEventBus, this._timeOut);
+  SynchronousMqttConnectionHandler(this._clientEventBus);
 
   /// Max connection attempts
-  static const int maxConnectionAttempts = 3;
+  static const int maxConnectionAttempts = 30;
 
   /// The broker connection acknowledgment timer
   MqttCancellableAsyncSleep _connectTimer;
@@ -53,7 +52,7 @@ class SynchronousMqttConnectionHandler extends MqttConnectionHandler {
       } else {
         MqttLogger.log(
             'SynchronousMqttConnectionHandler::internalConnect - insecure TCP selected');
-        connection = MqttNormalConnection(_clientEventBus, _timeOut);
+        connection = MqttNormalConnection(_clientEventBus);
       }
       connection.onDisconnected = onDisconnected;
 

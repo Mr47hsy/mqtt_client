@@ -114,6 +114,12 @@ class PublishingManager implements IPublishingManager {
         .contains(ackMsg.variableHeader.messageIdentifier)) {
       publishedMessages.remove(ackMsg.variableHeader.messageIdentifier);
     }
+
+    //add by mr47
+    MqttPublishMessage pubMsg = new MqttPublishMessage()
+        .withMessageIdentifier(ackMsg.variableHeader.messageIdentifier);
+    _notifyPublish(pubMsg);
+
     return true;
   }
 
